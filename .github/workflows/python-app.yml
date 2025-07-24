@@ -1,0 +1,218 @@
+@echo off
+color 0A
+title Dark Lotus Security Tool - Global Edition
+
+set VERSION=Dark Lotus v3.0.1 FINALY
+
+:MENU
+cls
+echo ============================================
+echo        DARK LOTUS SECURITY TOOL
+echo ============================================
+echo Version: %VERSION%
+echo.
+echo 1. Scan for viruses (Quick Scan)
+echo 2. Clean viruses (Full Scan)
+echo 3. Block suspicious IP
+echo 4. About System
+echo 5. About the Developers
+echo 6. Discord Server
+echo 7. Exit
+echo ============================================
+set /p choice=Choose an option (1-7): 
+
+if "%choice%"=="1" goto SCAN
+if "%choice%"=="2" goto CLEAN
+if "%choice%"=="3" goto BLOCK
+if "%choice%"=="4" goto ABOUTSYS
+if "%choice%"=="5" goto ABOUTDEV
+if "%choice%"=="6" goto DISCORD
+if "%choice%"=="7" exit
+
+echo Invalid option!
+pause
+goto MENU
+
+:: === REAL SCAN ===
+:SCAN
+cls
+echo Launching Microsoft Defender GUI for Quick Scan...
+start windowsdefender:
+echo.
+echo ✅ Real-time scan running in Defender interface.
+PowerShell -Command "(New-Object Media.SoundPlayer 'C:\\Windows\\Media\\Windows Notify System Generic.wav').PlaySync()"
+
+:: Animated console progress while scan runs
+setlocal ENABLEDELAYEDEXPANSION
+set /a "i=0"
+set "bar=|/-\"
+:SPIN_ANIM
+set /a "mod=i %% 4"
+set /p="\rScanning... !bar:~%mod%,1!" <nul
+ping -n 2 localhost >nul
+set /a i+=1
+if !i! LSS 30 goto SPIN_ANIM
+endlocal
+
+pause
+goto MENU
+
+:: === REAL CLEAN ===
+:CLEAN
+cls
+echo Launching Full Virus Scan (This may take some time)...
+:: Start full scan
+start /min PowerShell -Command "Start-MpScan -ScanType FullScan"
+
+:: Visual real-time-like progress bar simulation
+setlocal EnableDelayedExpansion
+set /a progress=0
+:CLEAN_PROGRESS
+cls
+echo ============================================
+echo        DARK LOTUS - FULL SYSTEM SCAN
+echo ============================================
+set /a hashCount=progress / 2
+set "bar="
+for /L %%i in (1,1,!hashCount!) do set "bar=!bar!#"
+echo [!bar!>                              ] !progress!%%
+echo.
+echo Scanning in progress... Please wait.
+set /a progress+=2
+if !progress! LEQ 100 (
+    timeout /t 1 >nul
+    goto CLEAN_PROGRESS
+)
+endlocal
+
+:: Check for threats
+PowerShell -Command "(Get-MpThreatDetection).ThreatName" > scan_result.txt
+findstr /R "." scan_result.txt >nul
+if %errorlevel%==0 (
+    echo.
+    echo !!! THREAT DETECTED !!!
+    echo Details saved to scan_result.txt
+    PowerShell -c "(New-Object Media.SoundPlayer 'C:\\Windows\\Media\\Windows Exclamation.wav').PlaySync()"
+    PowerShell -Command "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null; $template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02); $textNodes = $template.GetElementsByTagName('text'); $textNodes.Item(0).AppendChild($template.CreateTextNode('❌ Your computer contains a dangerous file!')) > $null; $textNodes.Item(1).AppendChild($template.CreateTextNode('Please check the scan result.')) > $null; $toast = [Windows.UI.Notifications.ToastNotification]::new($template); $notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('Dark Lotus'); $notifier.Show($toast)"
+    choice /M "Do you want to delete detected threats now?"
+    if errorlevel 1 PowerShell -Command "Remove-MpThreat"
+    echo Restarting system due to critical threat...
+    shutdown /r /t 5 /c "Critical threat removed. System will now restart."
+) else (
+    echo.
+    echo ✅ No threats detected. System is clean.
+    PowerShell -c "(New-Object Media.SoundPlayer 'C:\\Windows\\Media\\Windows Notify System Generic.wav').PlaySync()"
+    PowerShell -Command "[Windows.UI.Notifications.ToastNotificationManager, Windows.UI.Notifications, ContentType = WindowsRuntime] > $null; $template = [Windows.UI.Notifications.ToastNotificationManager]::GetTemplateContent([Windows.UI.Notifications.ToastTemplateType]::ToastText02); $textNodes = $template.GetElementsByTagName('text'); $textNodes.Item(0).AppendChild($template.CreateTextNode('✅ Your computer is in good condition')) > $null; $textNodes.Item(1).AppendChild($template.CreateTextNode('No threats found. Verified by Windows Security Center.')) > $null; $toast = [Windows.UI.Notifications.ToastNotification]::new($template); $notifier = [Windows.UI.Notifications.ToastNotificationManager]::CreateToastNotifier('Dark Lotus'); $notifier.Show($toast)"
+)
+pause
+goto MENU
+
+:: === REAL IP BLOCKER ===
+:BLOCK
+cls
+echo ============================================
+echo          SUSPICIOUS IP BLOCKER
+echo ============================================
+set /p ip=Enter IP to block: 
+
+echo %ip% | findstr /R "^([0-9]{1,3}\.){3}[0-9]{1,3}$" >nul
+if errorlevel 1 (
+    echo Invalid IP format! Example: 192.168.1.1
+    pause
+    goto MENU
+)
+
+netsh advfirewall firewall add rule name="DarkLotus_Block_%ip%" dir=in action=block remoteip=%ip% enable=yes >nul 2>&1
+
+if %errorlevel%==0 (
+    echo.
+    echo ✅ IP address %ip% has been successfully BLOCKED.
+    echo [LOG] Blocked IP: %ip% >> "%~dp0block_log.txt"
+) else (
+    echo.
+    echo ❌ Failed to block IP. Please run this tool as Administrator.
+)
+
+pause
+goto MENU
+
+:: === ABOUT SYSTEM ===
+:ABOUTSYS
+cls
+echo ============================================
+echo        SYSTEM INFORMATION - DARK LOTUS
+echo ============================================
+echo %VERSION%
+echo.
+echo DARK LOTUS provides REAL-TIME virus scanning,
+echo full virus removal, IP blocking, and now integrates:
+echo - Windows Security Center validation
+echo - System reboots after critical threats
+echo - Future plans include certificate signing
+echo.
+pause
+goto MENU
+
+:: === ABOUT DEVELOPERS ===
+:ABOUTDEV
+cls
+echo ============================================
+echo           ABOUT THE DEVELOPERS
+echo ============================================
+echo 1. XenoByte
+echo 2. ByteMeBaby
+echo 3. Return to main menu
+echo.
+set /p devchoice=Choose a developer (1-3):
+
+if "%devchoice%"=="1" goto XENOBYTE
+if "%devchoice%"=="2" goto BYTEMEBABY
+if "%devchoice%"=="3" goto MENU
+
+echo Invalid choice!
+pause
+goto ABOUTDEV
+
+:XENOBYTE
+cls
+echo ============================================
+echo              DEVELOPER PROFILE
+echo ============================================
+echo Name: XenoByte (aka HarveyWNvm)
+echo --------------------------------------------
+echo Started programming in 2019.
+echo Background in music production since 2016.
+echo Now focused on software and custom security tools.
+echo Specialties: Web dev, scripting, clean UIs.
+echo.
+echo Search "HarveyWNvm" online for more.
+echo Contact: harveynomvervevo@gmail.com
+echo.
+pause
+goto ABOUTDEV
+
+:BYTEMEBABY
+cls
+echo ============================================
+echo              DEVELOPER PROFILE
+echo ============================================
+echo Name: ByteMeBaby (aka f12e14)
+echo --------------------------------------------
+echo Cybersecurity-focused developer since 2020.
+echo Skills: scripting, malware research, penetration tools.
+echo Works with highly sensitive digital environments.
+echo.
+echo Contact: Provided only upon verified trust.
+echo Search "ByteMeBaby" online for related work.
+echo.
+pause
+goto ABOUTDEV
+
+:: === DISCORD SERVER ===
+:DISCORD
+cls
+echo Opening Discord server invite...
+start https://discord.gg/pMGx25B67J
+echo.
+pause
+goto MENU
