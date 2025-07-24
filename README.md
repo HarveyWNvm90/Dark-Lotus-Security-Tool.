@@ -74,4 +74,4 @@ Future development will focus on new tools  not updates to Dark Lotus.
 
 ## 🔗 Created by
 
-**@XenoByte** & **@ByteMeBaby**
+**@HarveyWNvm90** & **@ByteMeBaby**
