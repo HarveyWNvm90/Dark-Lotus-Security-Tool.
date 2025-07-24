@@ -1,4 +1,4 @@
-# 🛡️ Dark Lotus Security Tool — FINAL VERSION v3.0.1
+# 🛡️ Dark Lotus Security Tool  FINAL VERSION v3.0.1
 
 📅 **Release Date:** July 13, 2025  
 🕑 **Time:** 2:41 PM (Pacific Time / New Orleans, USA)  
@@ -15,7 +15,7 @@ Dark Lotus is a real-time, public-grade Windows security tool for:
 - ✅ IP blocking  
 - ✅ Integration with Windows Security Center  
 
-🔥 **This is not a simulator** — it runs natively via Windows Defender with live animations, sounds, and system alerts.  
+🔥 **This is not a simulator** - it runs natively via Windows Defender with live animations, sounds, and system alerts.  
 🛑 **This is the FINAL release.** No further versions will follow.
 
 ---
@@ -28,13 +28,13 @@ Dark Lotus is a real-time, public-grade Windows security tool for:
 - 🗑️ Interactive prompt to delete threats  
 - 🔁 Auto system restart after cleanup  
 - 📢 Windows toast notifications:
-  - ✅ *Clean system* — “Your computer is in good condition”  
-  - ❌ *Threat found* — “Dangerous file found!”  
+  - ✅ *Clean system* - “Your computer is in good condition”  
+  - ❌ *Threat found*  “Dangerous file found!”  
 - 🌐 Suspicious IP blocker via firewall rules  
 - 📈 Animated scan progress + sound alerts  
 - 🛡️ Full integration with Windows Security Center  
 - 🔐 Future digital signing support *(in development)*  
-- 🚫 This is a **live, production-ready tool** — *not a test environment!*
+- 🚫 This is a **live, production-ready tool**  *not a test environment!*
 
 ---
 
@@ -68,7 +68,7 @@ This is the **final official release** of Dark Lotus Security.
 ## 🧠 Final Note
 
 **This is the FINAL version.**  
-Future development will focus on new tools — not updates to Dark Lotus.
+Future development will focus on new tools  not updates to Dark Lotus.
 
 ---
 
