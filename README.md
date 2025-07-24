@@ -20,13 +20,13 @@ Dark Lotus is a real-time, public-grade Windows security tool for:
 🗑️ Interactive prompt to delete threats
 🔁 Auto system restart after cleanup
 📢 Windows toast notifications:
-  ✅ Clean system — “Your computer is in good condition”
-  ❌ Threat found — “Dangerous file found!”
+  ✅ Clean system - “Your computer is in good condition”
+  ❌ Threat found - “Dangerous file found!”
 🌐 Suspicious IP blocker via firewall rules
 📈 Animated scan progress + sound alerts
 🛡️ Full integration with Windows Security Center
 🔐 Future digital signing support (in development)
-🚫 This is a live, production-ready tool — not a test environment!
+🚫 This is a live, production-ready tool  not a test environment!
 
 📌 Note:
 This is the final official release of Dark Lotus Security.
@@ -41,6 +41,9 @@ This is the final official release of Dark Lotus Security.
 
 🌐 YouTube Video:
 👉 https://www.youtube.com/watch?v=JQ-2Sa8xZ88&ab
+
+🌐 WebSite Forum:
+👉 https://darkweb1.xyz/forums/viewtopic.php?t=8
 
 🧠 This is the FINAL version.
 Future development will focus on new tools — not updates to Dark Lotus.
